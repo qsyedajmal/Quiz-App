@@ -31,7 +31,7 @@ public class QuestionsController {
 	
 	@GetMapping("/question/category/{category}")
 	public ResponseEntity<List<Question>> getQuestionsByCategory(@PathVariable String category)
-	{   
+	{    
 		
 		return questionsService.getQuestionsByCategory(category);
 	}
