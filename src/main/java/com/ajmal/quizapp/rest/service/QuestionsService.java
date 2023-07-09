@@ -14,10 +14,23 @@ import com.ajmal.quizapp.rest.model.Question;
 public class QuestionsService {
     
 	@Autowired
-	QuestionsDAO questionsDAO;
+	private QuestionsDAO questionsDAO;
 	
 	public List<Question> getAllQuestions() {
 		return questionsDAO.findAll();
+		
+	}
+
+	public List<Question> getQuestionsByCategory(String category) {
+		
+		List<Question> que = questionsDAO.findByCategory(category);
+		
+		return que;
+	}
+
+	public String  addQuestion(Question question) {
+		questionsDAO.save(question);
+		return "success";
 		
 	}
 
