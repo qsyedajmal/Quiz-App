@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.ajmal.quizapp.rest.dao.QuestionsDAO;
 import com.ajmal.quizapp.rest.dao.QuizDAO;
+import com.ajmal.quizapp.rest.model.Answer;
 import com.ajmal.quizapp.rest.model.Question;
 import com.ajmal.quizapp.rest.model.Quiz;
 import com.ajmal.quizapp.rest.model.QuizQuestion;
@@ -63,6 +64,34 @@ public class QuizService {
 		}
 		
 		return new ResponseEntity<>(questionToUser,HttpStatus.OK);
+	}
+
+	public ResponseEntity<String> calculateResult(Integer quiz_id, List<Answer> answer) {
+		
+		Quiz quiz = quizDAO.findById(quiz_id).orElse(null);
+		
+		List<Question> question = quiz.getQuestion();
+		
+		int score =0;
+		int i=0;
+		
+		for(Answer a : answer)
+		{
+			while (i<question.size())
+			{
+				if(a.getId().equals(question.get(i).getId()))
+				{
+					if(a.getAnswer().equals(question.get(i).getRightAnswer()))
+					{
+						score++;
+					}
+				}
+				i++;
+			}
+			i=0;
+		}
+		
+		return new ResponseEntity<>("The score is "+score, HttpStatus.OK);
 	}
 
 }

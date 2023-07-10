@@ -8,8 +8,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ajmal.quizapp.rest.model.Answer;
 import com.ajmal.quizapp.rest.model.Question;
 import com.ajmal.quizapp.rest.model.QuizQuestion;
 import com.ajmal.quizapp.rest.service.QuizService;
@@ -27,11 +29,16 @@ public class QuizController {
 		
 	}
 	
-	@GetMapping("/quiz/get/{quiz_id}")
+	@GetMapping("/quiz/{quiz_id}")
 	public ResponseEntity<List<QuizQuestion>> getQuiz(@PathVariable Integer quiz_id)
 	{
 		return quizService.getQuizQuestions(quiz_id);
 		
 	}
 
+	@PostMapping("/quiz/{quiz_id}")
+	public ResponseEntity<String> submitQuiz(@PathVariable Integer quiz_id, @RequestBody List<Answer> answer)
+	{
+		return quizService.calculateResult(quiz_id,answer);
+	}
 }
