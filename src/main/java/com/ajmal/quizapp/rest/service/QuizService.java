@@ -1,7 +1,9 @@
 package com.ajmal.quizapp.rest.service;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,6 +14,7 @@ import com.ajmal.quizapp.rest.dao.QuestionsDAO;
 import com.ajmal.quizapp.rest.dao.QuizDAO;
 import com.ajmal.quizapp.rest.model.Question;
 import com.ajmal.quizapp.rest.model.Quiz;
+import com.ajmal.quizapp.rest.model.QuizQuestion;
 
 @Service
 public class QuizService {
@@ -43,6 +46,23 @@ public class QuizService {
 		}
 		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
+	}
+
+	public ResponseEntity<List<QuizQuestion>> getQuizQuestions(Integer quiz_id) {
+		
+		Quiz quiz = quizDAO.findById(quiz_id).orElse(null);
+		
+		List<Question> questionFromQuiz = quiz.getQuestion();
+		
+		List<QuizQuestion> questionToUser = new ArrayList<>();
+		
+		for(Question q : questionFromQuiz)
+		{
+			QuizQuestion qq = new QuizQuestion(q.getId(),q.getQuestionTitle(),q.getOption1(),q.getOption2(),q.getOption3(),q.getOption4());
+			questionToUser.add(qq);
+		}
+		
+		return new ResponseEntity<>(questionToUser,HttpStatus.OK);
 	}
 
 }
